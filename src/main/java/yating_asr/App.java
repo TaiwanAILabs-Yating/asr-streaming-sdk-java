@@ -36,8 +36,8 @@ public class App {
             }
 
             // File recognization
-            AsrFile asrFile = new AsrFile(filePath, pipeline, language);
-            asrFile.recognization(asrStreamingClient);
+            FileHandler fileHandler = new FileHandler(filePath);
+            fileHandler.recognization(asrStreamingClient);
         } catch (Exception e) {
             System.out.println("Exception: " + e.getMessage());
         }

@@ -1,30 +1,53 @@
 package yating_asr;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-public class AsrFile {
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+
+public class FileHandler {
     String filePath;
 
-    public AsrFile(String filePath, String pipeline, String language) {
+    public FileHandler(String filePath) {
         this.filePath = filePath;
     }
 
     public void recognization(AsrStreamingClient client) throws Exception {
         try {
             final Path audioFile = Paths.get(filePath);
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(audioFile.toString()));
+            AudioFormat audioFormat = audioInputStream.getFormat();
+
+            int sampleRate = (int) audioFormat.getSampleRate();
+            int sampleSizeInBits = audioFormat.getSampleSizeInBits();
+            int channels = audioFormat.getChannels();
+            System.out.println("sampleRate: " + sampleRate);
+            System.out.println("sampleSizeInBits: " + sampleSizeInBits);
+            System.out.println("channels: " + channels);
+
+            if (sampleRate != 16000) {
+                throw new Exception("sampleRate should be 16000");
+            }
+            if (sampleSizeInBits != 16) {
+                throw new Exception("sampleSizeInBits should be 16");
+            }
+            if (channels != 1) {
+                throw new Exception("channels should be 1");
+            }
+
             System.out.println("reading from: " + audioFile);
             byte[] audioData = Files.readAllBytes(audioFile);
 
             System.out.println("read " + audioData.length + " bytes");
 
-            int rate = 16000;
-            int bytesPerSample = 2;
-            int chunckSize = 2048;
+            int chunckSize = 1024;
 
-            final int bytesPerMsec = (bytesPerSample * rate) / 1000;
+            final int bytesPerMsec = sampleRate * sampleSizeInBits / 8 / 1000;
             System.out.println("bytesPerMsec: " + bytesPerMsec);
 
             long count = 0;
