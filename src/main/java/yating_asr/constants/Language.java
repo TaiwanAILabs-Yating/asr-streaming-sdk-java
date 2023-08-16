@@ -1,4 +1,4 @@
-package yating_asr.asr;
+package yating_asr.constants;
 
 import java.util.Arrays;
 import java.util.List;

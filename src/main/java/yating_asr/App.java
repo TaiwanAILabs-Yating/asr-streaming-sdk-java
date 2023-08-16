@@ -1,11 +1,16 @@
 package yating_asr;
 
 import java.net.URI;
+import java.util.List;
 
-import yating_asr.asr.StreamingClient;
-import yating_asr.asr.TokenClient;
-import yating_asr.asr.Language;
-import yating_asr.asr.Pipeline;
+import yating_asr.asr.AsrResult;
+import yating_asr.asr.Sentence;
+import yating_asr.constants.Language;
+import yating_asr.constants.Pipeline;
+
+import yating_asr.service.MessageListener;
+import yating_asr.service.StreamingClient;
+import yating_asr.service.TokenClient;
 
 public class App {
     public static void main(String[] args) {
@@ -20,15 +25,20 @@ public class App {
         String pipeline = Pipeline.General;
         String language = Language.ZHEN;
 
+        AsrResult asrResult = new AsrResult();
+
         try {
             // Initialize token client, get auth token
             TokenClient tokenClient = new TokenClient(asrApiUrl, asrApiKey);
             String authToken = tokenClient.GetToken(pipeline, language);
             System.out.println("authToken: " + authToken);
 
+            MessageListener messageListener = new MessageListener();
+            messageListener.addAsrResult(asrResult);
+
             // Initialize streaming client, ready for asr recognization
             StreamingClient streamingClient = new StreamingClient(new URI(asrWebSocketUrl + "?token=" +
-                    authToken));
+                    authToken), messageListener);
             streamingClient.connect();
 
             boolean scanning = true;
@@ -56,15 +66,20 @@ public class App {
         String pipeline = Pipeline.General;
         String language = Language.ZHEN;
 
+        AsrResult asrResult = new AsrResult();
+
         try {
             // Initialize token client, get auth token
             TokenClient tokenClient = new TokenClient(asrApiUrl, asrApiKey);
             String authToken = tokenClient.GetToken(pipeline, language);
             System.out.println("authToken: " + authToken);
 
+            MessageListener messageListener = new MessageListener();
+            messageListener.addAsrResult(asrResult);
+
             // Initialize streaming client, ready for asr recognization
             StreamingClient streamingClient = new StreamingClient(new URI(asrWebSocketUrl + "?token=" +
-                    authToken));
+                    authToken), messageListener);
             streamingClient.connect();
 
             boolean scanning = true;
@@ -78,6 +93,10 @@ public class App {
             // File recognization
             FileHandler fileHandler = new FileHandler(filePath);
             fileHandler.recognization(streamingClient);
+
+            // Print final result
+            List<Sentence> sentenceList = asrResult.getSentences();
+            sentenceList.forEach((s) -> System.out.println(s.getSentence()));
         } catch (Exception e) {
             System.out.println("Exception: " + e.getMessage());
         }

@@ -10,7 +10,7 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
-import yating_asr.asr.StreamingClient;
+import yating_asr.service.StreamingClient;
 
 public class FileHandler {
     String filePath;

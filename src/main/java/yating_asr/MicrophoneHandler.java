@@ -6,7 +6,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.TargetDataLine;
 
-import yating_asr.asr.StreamingClient;
+import yating_asr.service.StreamingClient;
 
 public class MicrophoneHandler {
     static float sampleRate = 16000;
