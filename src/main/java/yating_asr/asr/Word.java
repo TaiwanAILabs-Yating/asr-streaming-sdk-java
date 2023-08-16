@@ -1,4 +1,4 @@
-package yating_asr;
+package yating_asr.asr;
 
 import org.json.simple.JSONObject;
 

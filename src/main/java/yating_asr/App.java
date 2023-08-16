@@ -2,6 +2,11 @@ package yating_asr;
 
 import java.net.URI;
 
+import yating_asr.asr.StreamingClient;
+import yating_asr.asr.TokenClient;
+import yating_asr.asr.Language;
+import yating_asr.asr.Pipeline;
+
 public class App {
     public static void main(String[] args) {
         microphone();
@@ -17,18 +22,18 @@ public class App {
 
         try {
             // Initialize token client, get auth token
-            AsrTokenClient client = new AsrTokenClient(asrApiUrl, asrApiKey);
-            String authToken = client.GetToken(pipeline, language);
+            TokenClient tokenClient = new TokenClient(asrApiUrl, asrApiKey);
+            String authToken = tokenClient.GetToken(pipeline, language);
             System.out.println("authToken: " + authToken);
 
             // Initialize streaming client, ready for asr recognization
-            AsrStreamingClient asrStreamingClient = new AsrStreamingClient(new URI(asrWebSocketUrl + "?token=" +
+            StreamingClient streamingClient = new StreamingClient(new URI(asrWebSocketUrl + "?token=" +
                     authToken));
-            asrStreamingClient.connect();
+            streamingClient.connect();
 
             boolean scanning = true;
             while (scanning) {
-                if (asrStreamingClient.isOpen()) {
+                if (streamingClient.isOpen()) {
                     scanning = false;
                 }
                 Thread.sleep(100);
@@ -36,7 +41,7 @@ public class App {
 
             // Microphone audio recognization
             MicrophoneHandler microphoneHandler = new MicrophoneHandler();
-            microphoneHandler.recognization(asrStreamingClient);
+            microphoneHandler.recognization(streamingClient);
         } catch (Exception e) {
             System.out.println("Exception: " + e.getMessage());
         }
@@ -53,18 +58,18 @@ public class App {
 
         try {
             // Initialize token client, get auth token
-            AsrTokenClient client = new AsrTokenClient(asrApiUrl, asrApiKey);
-            String authToken = client.GetToken(pipeline, language);
+            TokenClient tokenClient = new TokenClient(asrApiUrl, asrApiKey);
+            String authToken = tokenClient.GetToken(pipeline, language);
             System.out.println("authToken: " + authToken);
 
             // Initialize streaming client, ready for asr recognization
-            AsrStreamingClient asrStreamingClient = new AsrStreamingClient(new URI(asrWebSocketUrl + "?token=" +
+            StreamingClient streamingClient = new StreamingClient(new URI(asrWebSocketUrl + "?token=" +
                     authToken));
-            asrStreamingClient.connect();
+            streamingClient.connect();
 
             boolean scanning = true;
             while (scanning) {
-                if (asrStreamingClient.isOpen()) {
+                if (streamingClient.isOpen()) {
                     scanning = false;
                 }
                 Thread.sleep(100);
@@ -72,7 +77,7 @@ public class App {
 
             // File recognization
             FileHandler fileHandler = new FileHandler(filePath);
-            fileHandler.recognization(asrStreamingClient);
+            fileHandler.recognization(streamingClient);
         } catch (Exception e) {
             System.out.println("Exception: " + e.getMessage());
         }

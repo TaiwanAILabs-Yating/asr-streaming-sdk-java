@@ -10,6 +10,8 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
+import yating_asr.asr.StreamingClient;
+
 public class FileHandler {
     String filePath;
 
@@ -17,7 +19,7 @@ public class FileHandler {
         this.filePath = filePath;
     }
 
-    public void recognization(AsrStreamingClient client) throws Exception {
+    public void recognization(StreamingClient client) throws Exception {
         try {
             final Path audioFile = Paths.get(filePath);
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(audioFile.toString()));

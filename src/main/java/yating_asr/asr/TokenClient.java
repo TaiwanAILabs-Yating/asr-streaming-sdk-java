@@ -1,4 +1,4 @@
-package yating_asr;
+package yating_asr.asr;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -8,11 +8,11 @@ import java.net.http.HttpResponse;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-public class AsrTokenClient {
+public class TokenClient {
     static String asrApiUrl;
     static String asrApiKey;
 
-    public AsrTokenClient(String url, String key) {
+    public TokenClient(String url, String key) {
         asrApiUrl = url;
         asrApiKey = key;
     }

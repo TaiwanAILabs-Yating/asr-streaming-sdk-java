@@ -1,4 +1,4 @@
-package yating_asr;
+package yating_asr.asr;
 
 import java.net.URI;
 import java.util.Map;
@@ -8,17 +8,17 @@ import org.java_websocket.handshake.ServerHandshake;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-public class AsrStreamingClient extends WebSocketClient {
+public class StreamingClient extends WebSocketClient {
 
-  public AsrStreamingClient(URI serverUri, Draft draft) {
+  public StreamingClient(URI serverUri, Draft draft) {
     super(serverUri, draft);
   }
 
-  public AsrStreamingClient(URI serverURI) {
+  public StreamingClient(URI serverURI) {
     super(serverURI);
   }
 
-  public AsrStreamingClient(URI serverUri, Map<String, String> httpHeaders) {
+  public StreamingClient(URI serverUri, Map<String, String> httpHeaders) {
     super(serverUri, httpHeaders);
   }
 
@@ -30,6 +30,7 @@ public class AsrStreamingClient extends WebSocketClient {
   @Override
   public void onMessage(String message) {
     try {
+      System.out.println(message);
       JSONParser parser = new JSONParser();
       JSONObject messageResponse = (JSONObject) parser.parse(message);
 

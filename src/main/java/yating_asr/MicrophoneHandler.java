@@ -6,6 +6,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.TargetDataLine;
 
+import yating_asr.asr.StreamingClient;
+
 public class MicrophoneHandler {
     static float sampleRate = 16000;
     static int sampleSizeInBits = 16;
@@ -23,7 +25,7 @@ public class MicrophoneHandler {
 
     }
 
-    public void recognization(AsrStreamingClient asrStreamingClient) throws Exception {
+    public void recognization(StreamingClient asrStreamingClient) throws Exception {
         AudioFormat format = getAudioFormat();
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
 
